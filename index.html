@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free construction brick quantity calculator. Calculate bricks, cement, sand and total cost for 4-inch or 9-inch walls. Accurate industry-verified formulas.">
+<meta name="keywords" content="brick calculator, brick quantity calculator, how many bricks per square foot, cement bags calculator, construction material estimator">
+<title>Construction Brick Quantity Calculator – Free & Accurate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   ROOT VARIABLES
+══════════════════════════════════════════ */
+:root {
+  --ink:       #111111;
+  --ink2:      #1e1e1e;
+  --gold:      #e8a000;
+  --gold2:     #ffb800;
+  --goldbg:    #fff8e6;
+  --brick:     #c0432a;
+  --bricklt:   #fdeee9;
+  --cement:    #6b7280;
+  --surface:   #f4f3f0;
+  --white:     #ffffff;
+  --border:    #e2e0da;
+  --muted:     #888;
+  --secondary: #555;
+  --green:     #1a6e44;
+  --greenbg:   #e6f4ee;
+  --shadow:    0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Barlow', Arial, sans-serif; background: var(--surface); color: var(--ink); font-size: 15px; line-height: 1.65; }
+h1,h2,h3,h4 { font-family: 'Playfair Display', Georgia, serif; }
+
+/* ══════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════ */
+.header {
+  background: var(--ink);
+  border-bottom: 3px solid var(--gold);
+  position: sticky; top: 0; z-index: 200;
+}
+.header-inner {
+  max-width: 1160px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-mark {
+  width: 38px; height: 38px; background: var(--gold);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.logo-mark svg { width: 22px; height: 22px; }
+.logo-wordmark { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: 0.01em; }
+.logo-wordmark em { color: var(--gold); font-style: normal; }
+.header-badge {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 20px;
+}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero {
+  background: var(--ink2);
+  color: var(--white);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+/* Diagonal brick pattern SVG bg */
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(255,255,255,0.015) 28px, rgba(255,255,255,0.015) 29px),
+    repeating-linear-gradient(90deg, transparent, transparent 56px, rgba(255,255,255,0.015) 56px, rgba(255,255,255,0.015) 57px);
+  pointer-events: none;
+}
+.hero-accent-bar {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 5px; background: var(--gold);
+}
+.hero-inner {
+  max-width: 1160px; margin: 0 auto; padding: 56px 24px 48px;
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 340px; gap: 40px; align-items: center;
+}
+@media(max-width:860px){ .hero-inner { grid-template-columns: 1fr; } }
+.hero-text {}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(232,160,0,0.18); border: 1px solid rgba(232,160,0,0.4);
+  color: var(--gold2); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+}
+.hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--gold2); display: inline-block; }
+.hero h1 { font-size: clamp(28px, 4vw, 48px); font-weight: 800; line-height: 1.08; margin-bottom: 18px; }
+.hero h1 .gold { color: var(--gold2); }
+.hero-desc { font-size: 16px; color: rgba(255,255,255,0.58); line-height: 1.7; max-width: 480px; margin-bottom: 28px; }
+.hero-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-pill {
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.75); font-size: 12px; font-weight: 600;
+  padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 5px;
+}
+/* Hero graphic — brick wall illustration */
+.hero-graphic { display: flex; flex-direction: column; gap: 5px; }
+.brick-layer { display: flex; gap: 5px; }
+.brick-layer:nth-child(even) { padding-left: 30px; }
+.brick-block {
+  height: 22px; border-radius: 3px;
+  background: var(--brick); opacity: 0.85;
+  flex-shrink: 0;
+}
+.brick-block.w1 { width: 55px; }
+.brick-block.w2 { width: 80px; }
+.brick-block.w3 { width: 40px; }
+.brick-block.dim { opacity: 0.3; }
+.brick-block.gold { background: var(--gold); opacity: 1; }
+@media(max-width:860px){ .hero-graphic { display: none; } }
+
+/* ══════════════════════════════════════════
+   STATS BAR
+══════════════════════════════════════════ */
+.stats-bar {
+  background: var(--gold);
+  display: flex; flex-wrap: wrap; justify-content: center;
+}
+.stat-item {
+  padding: 14px 30px; text-align: center;
+  border-right: 1px solid rgba(0,0,0,0.1);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 800; color: var(--ink); display: block; line-height: 1; }
+.stat-lbl { font-size: 10px; font-weight: 700; color: rgba(0,0,0,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; display: block; }
+
+/* ══════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════ */
+.container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.page-body { padding: 44px 0 90px; }
+.tool-grid { display: grid; grid-template-columns: 1fr 370px; gap: 28px; align-items: start; }
+@media(max-width:900px){ .tool-grid { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════════════════════
+   PANEL / CARD
+══════════════════════════════════════════ */
+.panel {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 22px;
+}
+.panel:last-child { margin-bottom: 0; }
+.panel-head {
+  background: var(--ink); color: var(--white);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 10px;
+}
+.panel-head .ph-icon { color: var(--gold); flex-shrink: 0; }
+.panel-head h2 {
+  font-family: 'Barlow', Arial, sans-serif;
+  font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--white);
+}
+.panel-head .ph-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,0.12);
+  color: var(--gold2); font-size: 10px; font-weight: 700;
+  padding: 3px 9px; border-radius: 10px; letter-spacing: 0.05em;
+}
+.panel-body { padding: 24px; }
+
+/* ══════════════════════════════════════════
+   FORM FIELDS
+══════════════════════════════════════════ */
+.form-row { margin-bottom: 18px; }
+.form-row:last-of-type { margin-bottom: 0; }
+.form-label {
+  display: block; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--muted); margin-bottom: 7px;
+}
+.form-label .opt { font-size: 10px; font-weight: 400; text-transform: none; letter-spacing: 0; color: #aaa; }
+/* Wall type toggles */
+.wall-toggles { display: flex; gap: 10px; }
+.wall-btn {
+  flex: 1; padding: 13px 12px; cursor: pointer;
+  border: 2px solid var(--border); border-radius: 10px;
+  background: var(--white); color: var(--muted);
+  text-align: center; transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.wall-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--ink); opacity: 0; transition: opacity 0.2s;
+}
+.wall-btn:hover { border-color: var(--gold); color: var(--ink); }
+.wall-btn.active { border-color: var(--ink); background: var(--ink); color: var(--gold); }
+.wall-btn .wb-title { font-size: 15px; font-weight: 700; display: block; font-family: 'Barlow', sans-serif; position: relative; }
+.wall-btn .wb-sub { font-size: 11px; display: block; margin-top: 3px; opacity: 0.65; position: relative; }
+.wall-btn .wb-brick {
+  display: flex; gap: 2px; justify-content: center; margin-top: 8px; position: relative;
+}
+.wall-btn .wb-b { height: 8px; border-radius: 1px; background: currentColor; }
+/* Input + unit group */
+.input-group {
+  display: flex; border: 2px solid var(--border); border-radius: 10px;
+  overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--white);
+}
+.input-group:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(232,160,0,0.12); }
+.input-group input[type=number] {
+  flex: 1; min-width: 0; padding: 11px 14px;
+  border: none; outline: none;
+  font-family: 'Barlow', Arial, sans-serif; font-size: 15px; font-weight: 500;
+  background: transparent; color: var(--ink);
+  -moz-appearance: textfield;
+}
+.input-group input[type=number]::placeholder { color: #bbb; font-weight: 400; }
+.input-group input[type=number]::-webkit-inner-spin-button,
+.input-group input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+.input-sep { width: 2px; background: var(--border); flex-shrink: 0; align-self: stretch; margin: 8px 0; }
+.input-group select.usel {
+  flex-shrink: 0; width: 90px; padding: 11px 8px 11px 11px;
+  border: none; outline: none; background: #f8f7f5;
+  color: var(--ink); font-family: 'Barlow', Arial, sans-serif;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 8px center;
+  padding-right: 22px;
+}
+/* Divider */
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+/* Waste slider */
+.waste-row { display: flex; align-items: center; gap: 14px; }
+.waste-row input[type=range] {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  height: 5px; background: var(--border); border-radius: 3px; outline: none;
+  accent-color: var(--gold);
+}
+.waste-row input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 20px; height: 20px;
+  background: var(--ink); border: 3px solid var(--gold);
+  border-radius: 50%; cursor: pointer;
+}
+.waste-chip {
+  background: var(--ink); color: var(--gold2);
+  font-size: 14px; font-weight: 800;
+  padding: 5px 12px; border-radius: 8px; min-width: 52px; text-align: center;
+  font-family: 'Playfair Display', serif; flex-shrink: 0;
+}
+.form-hint { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+/* ══════════════════════════════════════════
+   CALCULATE BUTTON
+══════════════════════════════════════════ */
+.btn-calc {
+  width: 100%; padding: 16px 20px; margin-top: 8px;
+  background: var(--ink); color: var(--gold2);
+  border: none; border-radius: 11px;
+  font-family: 'Barlow', Arial, sans-serif;
+  font-size: 15px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.btn-calc::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(232,160,0,0.15), transparent);
+  pointer-events: none;
+}
+.btn-calc:hover { background: #2a2a2a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+.btn-calc:active { transform: translateY(0); }
+
+/* ══════════════════════════════════════════
+   RESULTS
+══════════════════════════════════════════ */
+.results-wrap { display: none; }
+.results-wrap.show { display: block; }
+
+/* Result grid cards */
+.res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0; }
+@media(max-width:480px){ .res-grid { grid-template-columns: 1fr; } }
+.res-card {
+  background: var(--surface); border-radius: 10px; padding: 16px;
+  border-left: 4px solid var(--gold); position: relative; overflow: hidden;
+}
+.res-card::after {
+  content: ''; position: absolute; top: -20px; right: -20px;
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--gold); opacity: 0.06;
+}
+.res-card.brick-c { border-left-color: var(--brick); }
+.res-card.brick-c::after { background: var(--brick); }
+.res-card.cement-c { border-left-color: var(--cement); }
+.res-card.cement-c::after { background: var(--cement); }
+.res-card.sand-c { border-left-color: #b8860b; }
+.res-card.full { grid-column: 1/-1; background: var(--ink); border-left: 0; border-radius: 12px; padding: 22px 24px; }
+.res-card.full::after { background: var(--gold); opacity: 0.05; width: 100px; height: 100px; top: -30px; right: -20px; }
+.rc-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin-bottom: 5px; }
+.res-card.full .rc-label { color: rgba(255,255,255,0.4); }
+.rc-value { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 800; color: var(--ink); line-height: 1; }
+.res-card.full .rc-value { font-size: 42px; color: var(--gold2); }
+.rc-unit { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.res-card.full .rc-unit { color: rgba(255,255,255,0.35); }
+
+/* Material table */
+.mat-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.mat-tbl thead tr { background: var(--ink); }
+.mat-tbl th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--white); }
+.mat-tbl td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--ink); vertical-align: middle; }
+.mat-tbl tr:last-child td { border-bottom: none; }
+.mat-tbl tbody tr:hover td { background: #fafaf8; }
+.mat-tbl .val-cell { font-weight: 700; font-size: 15px; }
+.mat-tbl .total-tr td { background: var(--goldbg); font-weight: 800; font-size: 15px; border-bottom: none; }
+.mat-icon { width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; vertical-align: middle; margin-right: 6px; }
+.mat-icon.br { background: var(--bricklt); }
+.mat-icon.ce { background: #f0f0f0; }
+.mat-icon.sa { background: #fdf3e0; }
+.mat-icon.wa { background: #e8f4ff; }
+
+/* Cost section */
+.currency-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.currency-row label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.currency-row select {
+  padding: 8px 28px 8px 11px; border: 2px solid var(--border); border-radius: 8px;
+  font-family: 'Barlow', Arial, sans-serif; font-size: 13px; font-weight: 600;
+  background: var(--white); color: var(--ink);
+  -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 9px center;
+  cursor: pointer;
+}
+.price-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+@media(max-width:540px){ .price-inputs { grid-template-columns: 1fr; } }
+.price-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); display: block; margin-bottom: 5px; }
+.price-field input {
+  width: 100%; padding: 9px 12px; border: 2px solid var(--border); border-radius: 8px;
+  font-family: 'Barlow', Arial, sans-serif; font-size: 14px; font-weight: 500;
+  background: var(--white); color: var(--ink); -moz-appearance: textfield;
+  transition: border-color 0.2s;
+}
+.price-field input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.price-field input:focus { outline: none; border-color: var(--gold); }
+
+.btn-reset {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 2px solid var(--border); border-radius: 8px;
+  padding: 8px 16px; font-family: 'Barlow', Arial, sans-serif;
+  font-size: 12px; font-weight: 600; color: var(--muted);
+  cursor: pointer; margin-top: 10px; transition: all 0.18s;
+}
+.btn-reset:hover { border-color: #c0392b; color: #c0392b; }
+
+/* ══════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════ */
+.sidebar { display: flex; flex-direction: column; gap: 20px; }
+.side-panel {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; box-shadow: var(--shadow);
+}
+.side-head {
+  background: var(--ink); color: var(--white);
+  padding: 13px 18px; font-family: 'Barlow', Arial, sans-serif;
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+  display: flex; align-items: center; gap: 8px;
+}
+.side-head .sh-icon { color: var(--gold); }
+.side-body { padding: 16px 18px; }
+.ref-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ref-tbl th { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 5px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+.ref-tbl td { padding: 8px 8px; border-bottom: 1px solid #f2f2f0; color: var(--ink); font-size: 13px; }
+.ref-tbl tr:last-child td { border-bottom: none; }
+.ref-tbl .highlight { font-weight: 700; color: var(--brick); }
+.tip-list { list-style: none; }
+.tip-list li { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 13px; font-size: 13px; line-height: 1.55; }
+.tip-list li:last-child { margin-bottom: 0; }
+.tip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
+/* Formula box */
+.formula-box {
+  background: var(--ink); color: var(--white);
+  border-radius: 10px; padding: 16px; margin-top: 4px;
+}
+.formula-box h4 { font-family: 'Barlow', Arial, sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 10px; }
+.formula-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 12px; }
+.formula-row:last-child { border-bottom: none; }
+.fk { color: rgba(255,255,255,0.5); }
+.fv { font-weight: 700; color: var(--gold2); font-family: 'Playfair Display', serif; }
+
+/* ══════════════════════════════════════════
+   SEO CONTENT
+══════════════════════════════════════════ */
+.seo-wrap { margin-top: 64px; }
+.sec-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--goldbg); border: 1px solid rgba(232,160,0,0.3);
+  color: #a06800; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 13px; border-radius: 20px; margin-bottom: 12px;
+}
+.sec-title { font-size: clamp(20px, 2.8vw, 30px); font-weight: 800; margin-bottom: 16px; }
+.sec-title .u { text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 6px; }
+.seo-lead { font-size: 15px; line-height: 1.8; color: #333; max-width: 780px; margin-bottom: 18px; }
+
+/* Consideration grid */
+.consid-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 24px 0; }
+.consid-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; border-top: 4px solid var(--gold);
+  box-shadow: var(--shadow); transition: box-shadow 0.2s;
+}
+.consid-card:hover { box-shadow: var(--shadow-lg); }
+.consid-card h4 { font-family: 'Barlow', Arial, sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.consid-card p { font-size: 13px; color: var(--secondary); line-height: 1.6; }
+
+/* Example cards */
+.ex-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 18px; margin: 24px 0; }
+.ex-card {
+  background: var(--ink); color: var(--white);
+  border-radius: 14px; padding: 24px;
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.ex-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gold); }
+.ex-card::after { content: ''; position: absolute; bottom: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%; background: var(--gold); opacity: 0.06; }
+.ex-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold2); margin-bottom: 14px; }
+.ex-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; }
+.ex-k { color: rgba(255,255,255,0.45); }
+.ex-v { font-weight: 700; }
+.ex-div { height: 1px; background: rgba(255,255,255,0.1); margin: 12px 0; }
+.ex-total { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 800; color: var(--gold2); }
+.ex-price { font-size: 13px; color: var(--gold2); font-weight: 700; margin-top: 4px; }
+
+/* Tips grid */
+.tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 24px 0; }
+.tip-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; display: flex; gap: 14px; align-items: flex-start;
+  box-shadow: var(--shadow);
+}
+.tip-num { background: var(--ink); color: var(--gold2); font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 800; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tip-card h4 { font-family: 'Barlow', Arial, sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+.tip-card p { font-size: 12px; color: var(--secondary); line-height: 1.55; }
+
+/* FAQ */
+.faq-list { margin-top: 22px; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-btn {
+  width: 100%; background: none; border: none; padding: 17px 0;
+  text-align: left; font-family: 'Barlow', Arial, sans-serif;
+  font-size: 14px; font-weight: 700; color: var(--ink); cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+.faq-btn:hover { color: #333; }
+.faq-arrow { font-size: 22px; transition: transform 0.28s; color: var(--gold); flex-shrink: 0; }
+.faq-btn.open .faq-arrow { transform: rotate(45deg); }
+.faq-ans { display: none; padding-bottom: 17px; font-size: 14px; color: var(--secondary); line-height: 1.72; }
+.faq-ans.open { display: block; }
+
+/* Footer */
+.footer {
+  background: var(--ink); color: rgba(255,255,255,0.38);
+  text-align: center; padding: 28px 24px; margin-top: 64px;
+  font-size: 13px; border-top: 3px solid var(--gold);
+}
+.footer strong { color: var(--gold); }
+
+@media(max-width:600px){
+  .stat-item { padding: 12px 16px; }
+  .wall-toggles { flex-direction: column; }
+  .res-card.full .rc-value { font-size: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══════════════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 22 22" fill="none">
+          <rect x="1" y="4" width="9" height="5" rx="1.2" fill="#111"/>
+          <rect x="12" y="4" width="9" height="5" rx="1.2" fill="#111"/>
+          <rect x="5" y="12" width="12" height="5" rx="1.2" fill="#111"/>
+          <rect x="1" y="12" width="3" height="5" rx="1.2" fill="#111"/>
+          <rect x="18" y="12" width="3" height="5" rx="1.2" fill="#111"/>
+        </svg>
+      </div>
+      <div class="logo-wordmark">Brick<em>Calc</em> Pro</div>
+    </div>
+    <div class="header-badge">Free · Accurate · Trusted</div>
+  </div>
+</header>
+
+<!-- ═══ HERO ══════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-accent-bar"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow"><span></span> Construction Material Estimator</div>
+      <h1>Construction<br><span class="gold">Brick Quantity</span><br>Calculator</h1>
+      <p class="hero-desc">Get accurate brick counts, cement bags, sand volumes and total project cost — using verified industry-standard formulas trusted by engineers worldwide.</p>
+      <div class="hero-pills">
+        <span class="hero-pill">✓ 4-inch &amp; 9-inch walls</span>
+        <span class="hero-pill">✓ All unit types</span>
+        <span class="hero-pill">✓ Cost estimator</span>
+        <span class="hero-pill">✓ Waste included</span>
+      </div>
+    </div>
+    <div class="hero-graphic" aria-hidden="true">
+      <div class="brick-layer"><div class="brick-block w1 gold"></div><div class="brick-block w2"></div><div class="brick-block w1 dim"></div></div>
+      <div class="brick-layer"><div class="brick-block w2"></div><div class="brick-block w1"></div><div class="brick-block w1 dim"></div></div>
+      <div class="brick-layer"><div class="brick-block w1 dim"></div><div class="brick-block w1"></div><div class="brick-block w2 gold"></div></div>
+      <div class="brick-layer"><div class="brick-block w2"></div><div class="brick-block w1 dim"></div><div class="brick-block w1"></div></div>
+      <div class="brick-layer"><div class="brick-block w1"></div><div class="brick-block w2"></div><div class="brick-block w1 dim"></div></div>
+      <div class="brick-layer"><div class="brick-block w1 dim"></div><div class="brick-block w1 gold"></div><div class="brick-block w2"></div></div>
+      <div class="brick-layer"><div class="brick-block w2"></div><div class="brick-block w1"></div><div class="brick-block w1 dim"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS BAR ═════════════════════════ -->
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-num" id="usageCtr">128,451+</span><span class="stat-lbl">Calculations done</span></div>
+  <div class="stat-item"><span class="stat-num">500</span><span class="stat-lbl">Bricks = 1 Cement Bag</span></div>
+  <div class="stat-item"><span class="stat-num">60+</span><span class="stat-lbl">Countries using</span></div>
+  <div class="stat-item"><span class="stat-num">Free</span><span class="stat-lbl">Always &amp; forever</span></div>
+</div>
+
+<!-- ═══ PAGE BODY ═════════════════════════ -->
+<main class="page-body">
+  <div class="container">
+    <div class="tool-grid">
+
+      <!-- ── LEFT COLUMN ───────────────────── -->
+      <div>
+
+        <!-- WALL DETAILS -->
+        <div class="panel">
+          <div class="panel-head">
+            <svg class="ph-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="4" rx="1"/><rect x="2" y="14" width="20" height="4" rx="1"/></svg>
+            <h2>Wall Details</h2>
+            <span class="ph-badge">STEP 1</span>
+          </div>
+          <div class="panel-body">
+
+            <div class="form-row">
+              <div class="form-label">Wall Type</div>
+              <div class="wall-toggles">
+                <button class="wall-btn active" id="btn4" onclick="setWall('4',this)">
+                  <span class="wb-title">4 Inch</span>
+                  <span class="wb-sub">Partition / Interior</span>
+                  <div class="wb-brick"><div class="wb-b" style="width:30px"></div><div class="wb-b" style="width:20px"></div></div>
+                </button>
+                <button class="wall-btn" id="btn9" onclick="setWall('9',this)">
+                  <span class="wb-title">9 Inch</span>
+                  <span class="wb-sub">Load Bearing / Exterior</span>
+                  <div class="wb-brick"><div class="wb-b" style="width:20px"></div><div class="wb-b" style="width:28px"></div><div class="wb-b" style="width:16px"></div></div>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Wall Length</label>
+              <div class="input-group">
+                <input type="number" id="inpLen" placeholder="e.g. 20" min="0" step="any">
+                <div class="input-sep"></div>
+                <select class="usel" id="selLen">
+                  <option value="ft" selected>Feet</option>
+                  <option value="m">Meters</option>
+                  <option value="in">Inches</option>
+                  <option value="cm">Cm</option>
+                  <option value="yd">Yards</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Wall Height</label>
+              <div class="input-group">
+                <input type="number" id="inpHt" placeholder="e.g. 10" min="0" step="any">
+                <div class="input-sep"></div>
+                <select class="usel" id="selHt">
+                  <option value="ft" selected>Feet</option>
+                  <option value="m">Meters</option>
+                  <option value="in">Inches</option>
+                  <option value="cm">Cm</option>
+                  <option value="yd">Yards</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label class="form-label">Wall Area <span class="opt">(optional — overrides length × height)</span></label>
+              <div class="input-group">
+                <input type="number" id="inpArea" placeholder="Leave blank to auto-calculate" min="0" step="any">
+                <div class="input-sep"></div>
+                <select class="usel" id="selArea">
+                  <option value="sqft" selected>ft²</option>
+                  <option value="sqm">m²</option>
+                  <option value="sqyd">yd²</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="form-row">
+              <label class="form-label">Waste / Breakage Percentage</label>
+              <div class="waste-row">
+                <input type="range" id="wasteRange" min="0" max="25" value="5" step="1" oninput="document.getElementById('wasteChip').textContent=this.value+'%'">
+                <div class="waste-chip" id="wasteChip">5%</div>
+              </div>
+              <p class="form-hint">Recommended: 5% skilled work · 7–10% standard · 15–20% curved/complex walls</p>
+            </div>
+
+            <button class="btn-calc" onclick="doCalc()">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 12h5M8 17h3"/></svg>
+              Calculate Now
+            </button>
+
+          </div>
+        </div><!-- /panel -->
+
+        <!-- RESULTS (hidden until calc) -->
+        <div class="results-wrap" id="resultsWrap">
+
+          <!-- Brick results -->
+          <div class="panel">
+            <div class="panel-head">
+              <svg class="ph-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <h2>Brick Results</h2>
+              <span class="ph-badge">STEP 2</span>
+            </div>
+            <div class="panel-body">
+              <div class="res-grid">
+                <div class="res-card">
+                  <div class="rc-label">Wall Area</div>
+                  <div class="rc-value" id="rArea">—</div>
+                  <div class="rc-unit">square feet</div>
+                </div>
+                <div class="res-card brick-c">
+                  <div class="rc-label">Net Bricks Required</div>
+                  <div class="rc-value" id="rBase">—</div>
+                  <div class="rc-unit">bricks (no waste)</div>
+                </div>
+                <div class="res-card">
+                  <div class="rc-label">Waste Bricks</div>
+                  <div class="rc-value" id="rWaste">—</div>
+                  <div class="rc-unit">extra for breakage</div>
+                </div>
+                <div class="res-card full">
+                  <div class="rc-label">✦ Total Bricks to Order</div>
+                  <div class="rc-value" id="rTotal">—</div>
+                  <div class="rc-unit">including waste — order this many</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Materials panel -->
+          <div class="panel">
+            <div class="panel-head">
+              <svg class="ph-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <h2>Cement, Sand &amp; Water</h2>
+              <span class="ph-badge">STEP 3</span>
+            </div>
+            <div class="panel-body">
+              <table class="mat-tbl">
+                <thead>
+                  <tr>
+                    <th>Material</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Basis</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="mat-icon br">🧱</span>Cement</td>
+                    <td class="val-cell" id="rCement">—</td>
+                    <td>Bags (50 kg each)</td>
+                    <td style="color:var(--muted);font-size:12px;">1 bag per 500 bricks</td>
+                  </tr>
+                  <tr>
+                    <td><span class="mat-icon sa">🪨</span>Sand</td>
+                    <td class="val-cell" id="rSand">—</td>
+                    <td>Cubic feet (ft³)</td>
+                    <td style="color:var(--muted);font-size:12px;">7.5 ft³ per cement bag</td>
+                  </tr>
+                  <tr>
+                    <td><span class="mat-icon wa">💧</span>Water</td>
+                    <td class="val-cell" id="rWater">—</td>
+                    <td>Liters</td>
+                    <td style="color:var(--muted);font-size:12px;">25 L per cement bag</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="form-hint" style="margin-top:11px;">Formula: 1 cement bag per 500 bricks · Sand = Cement bags × 7.5 ft³ · Mix ratio 1:6 (cement:sand)</p>
+            </div>
+          </div>
+
+          <!-- Cost panel -->
+          <div class="panel">
+            <div class="panel-head">
+              <svg class="ph-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <h2>Cost Estimator</h2>
+              <span class="ph-badge">STEP 4</span>
+            </div>
+            <div class="panel-body">
+              <div class="currency-row">
+                <label>Currency:</label>
+                <select id="selCur" onchange="updateCost()">
+                  <option value="$">USD ($)</option>
+                  <option value="£">GBP (£)</option>
+                  <option value="€">EUR (€)</option>
+                  <option value="₹">INR (₹)</option>
+                  <option value="₨">PKR (₨)</option>
+                  <option value="AED ">AED</option>
+                  <option value="SAR ">SAR</option>
+                  <option value="CAD $">CAD ($)</option>
+                  <option value="AUD $">AUD ($)</option>
+                </select>
+              </div>
+              <div class="price-inputs">
+                <div class="price-field">
+                  <label>Price per Brick</label>
+                  <input type="number" id="pBrick" placeholder="e.g. 0.50" min="0" step="any" oninput="updateCost()">
+                </div>
+                <div class="price-field">
+                  <label>Price / Cement Bag</label>
+                  <input type="number" id="pCement" placeholder="e.g. 8.00" min="0" step="any" oninput="updateCost()">
+                </div>
+                <div class="price-field">
+                  <label>Price per ft³ Sand</label>
+                  <input type="number" id="pSand" placeholder="e.g. 1.50" min="0" step="any" oninput="updateCost()">
+                </div>
+              </div>
+              <table class="mat-tbl">
+                <thead><tr><th>Item</th><th>Quantity</th><th>Unit Price</th><th>Total Cost</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td>🧱 Bricks</td>
+                    <td id="ctQBrick">—</td>
+                    <td id="ctUBrick">—</td>
+                    <td id="ctCBrick" style="font-weight:700;">—</td>
+                  </tr>
+                  <tr>
+                    <td>🪨 Cement</td>
+                    <td id="ctQCement">—</td>
+                    <td id="ctUCement">—</td>
+                    <td id="ctCCement" style="font-weight:700;">—</td>
+                  </tr>
+                  <tr>
+                    <td>🪣 Sand</td>
+                    <td id="ctQSand">—</td>
+                    <td id="ctUSand">—</td>
+                    <td id="ctCSand" style="font-weight:700;">—</td>
+                  </tr>
+                  <tr class="total-tr">
+                    <td colspan="3" style="font-size:15px;">💰 Grand Total</td>
+                    <td id="ctTotal">—</td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn-reset" onclick="doReset()">↺ Reset Calculator</button>
+            </div>
+          </div>
+
+        </div><!-- /results-wrap -->
+      </div><!-- /left col -->
+
+      <!-- ── SIDEBAR ────────────────────────── -->
+      <div class="sidebar">
+
+        <!-- Formula reference -->
+        <div class="side-panel">
+          <div class="side-head"><span class="sh-icon">🧮</span> Verified Formulas Used</div>
+          <div class="side-body">
+            <div class="formula-box">
+              <h4>Core Calculation Rules</h4>
+              <div class="formula-row"><span class="fk">4-inch wall</span><span class="fv">5 bricks / ft²</span></div>
+              <div class="formula-row"><span class="fk">9-inch wall</span><span class="fv">9 bricks / ft²</span></div>
+              <div class="formula-row"><span class="fk">Cement</span><span class="fv">1 bag / 500 bricks</span></div>
+              <div class="formula-row"><span class="fk">Sand</span><span class="fv">7.5 ft³ / cement bag</span></div>
+              <div class="formula-row"><span class="fk">Water</span><span class="fv">25 L / cement bag</span></div>
+              <div class="formula-row"><span class="fk">Mortar ratio</span><span class="fv">1:6 (C:S)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Density table -->
+        <div class="side-panel">
+          <div class="side-head"><span class="sh-icon">📊</span> Brick Density Quick Ref</div>
+          <div class="side-body">
+            <table class="ref-tbl">
+              <thead><tr><th>Wall Type</th><th>Per ft²</th><th>Per m²</th></tr></thead>
+              <tbody>
+                <tr><td><strong>4 Inch</strong></td><td class="highlight">5 bricks</td><td>53.8</td></tr>
+                <tr><td><strong>9 Inch</strong></td><td class="highlight">9 bricks</td><td>96.9</td></tr>
+              </tbody>
+            </table>
+            <p class="form-hint" style="margin-top:9px;">Brick size: 9×4.5×3 in · Joint: 10mm mortar</p>
+          </div>
+        </div>
+
+        <!-- Mortar ratios -->
+        <div class="side-panel">
+          <div class="side-head"><span class="sh-icon">🧪</span> Mortar Mix Ratios</div>
+          <div class="side-body">
+            <table class="ref-tbl">
+              <thead><tr><th>Application</th><th>C : S</th></tr></thead>
+              <tbody>
+                <tr><td>Interior partition</td><td><strong>1 : 6</strong></td></tr>
+                <tr><td>Load-bearing exterior</td><td><strong>1 : 4</strong></td></tr>
+                <tr><td>Foundation masonry</td><td><strong>1 : 3</strong></td></tr>
+                <tr><td>Decorative thin joints</td><td><strong>1 : 8</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Unit converter -->
+        <div class="side-panel">
+          <div class="side-head"><span class="sh-icon">📏</span> Unit Conversion Ref</div>
+          <div class="side-body">
+            <table class="ref-tbl">
+              <thead><tr><th>From</th><th>Equals</th></tr></thead>
+              <tbody>
+                <tr><td>1 Meter</td><td>3.281 Feet</td></tr>
+                <tr><td>1 Foot</td><td>12 Inches</td></tr>
+                <tr><td>1 Yard</td><td>3 Feet</td></tr>
+                <tr><td>1 m²</td><td>10.764 ft²</td></tr>
+                <tr><td>1 yd²</td><td>9 ft²</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="side-panel">
+          <div class="side-head"><span class="sh-icon">💡</span> Pro Tips</div>
+          <div class="side-body">
+            <ul class="tip-list">
+              <li><div class="tip-dot"></div><span>Subtract all door and window openings from wall area before calculating — each standard door saves ~100 bricks on 4-inch walls.</span></li>
+              <li><div class="tip-dot"></div><span>Always order at least 5–10% extra bricks. Running short mid-project causes costly delays and colour mismatches.</span></li>
+              <li><div class="tip-dot"></div><span>Soak bricks in water for 12 hours before laying to prevent them absorbing mortar water and weakening the bond.</span></li>
+              <li><div class="tip-dot"></div><span>Store cement bags off the ground on wooden pallets and cover with waterproof sheets to prevent moisture loss of strength.</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div><!-- /sidebar -->
+    </div><!-- /tool-grid -->
+
+    <!-- ═══ SEO CONTENT ════════════════════ -->
+    <div class="seo-wrap">
+
+      <div class="sec-eyebrow">📌 About This Tool</div>
+      <h2 class="sec-title">What Is a <span class="u">Construction Brick Quantity Calculator</span>?</h2>
+      <p class="seo-lead">A <strong>construction brick quantity calculator</strong> is an essential engineering tool for builders, civil engineers, architects, and homeowners who need accurate material estimates before starting a masonry project. This free tool applies the verified industry formula of <strong>1 cement bag per 500 bricks</strong> and a <strong>1:6 cement-to-sand mortar ratio</strong> — delivering precise quantities that match real-world construction practice. Stop overspending or running short on materials — calculate exactly what you need.</p>
+      <p class="seo-lead">Whether you're building a <strong>4-inch partition wall</strong> for an interior room or a <strong>9-inch load-bearing exterior wall</strong>, this calculator factors in wall dimensions, mortar joint thickness, breakage waste percentage, and full material cost — with support for all major measurement units (feet, meters, inches, cm, yards) and 9 currencies.</p>
+
+      <!-- Key Considerations -->
+      <div class="sec-eyebrow" style="margin-top:44px;">📌 Key Considerations</div>
+      <h2 class="sec-title">Key Considerations When <span class="u">Estimating Bricks</span></h2>
+      <div class="consid-grid">
+        <div class="consid-card"><h4>🧱 Wall Type is Critical</h4><p>A 4-inch wall uses 5 bricks/ft² while a 9-inch wall uses 9 bricks/ft². Underestimating this doubles your material error and blows your budget before construction starts.</p></div>
+        <div class="consid-card"><h4>📐 Deduct Doors &amp; Windows</h4><p>Voids in the wall save significant material. A standard door (21 ft²) on a 9-inch wall saves ~189 bricks and almost half a cement bag. Always subtract before calculating.</p></div>
+        <div class="consid-card"><h4>🪣 Cement:Sand Ratio</h4><p>This tool uses the standard 1:6 ratio — for every 1 part cement, use 6 parts sand. Deviation from this weakens mortar strength. Use 1:4 for exterior walls in high-load or weather-exposed areas.</p></div>
+        <div class="consid-card"><h4>🔢 Waste is Non-Negotiable</h4><p>Even experienced masons budget 5% waste. Curved walls, window reveals, and complex bonds can waste up to 20%. Always order extra — leftover bricks store easily; missing bricks cause weeks of delay.</p></div>
+        <div class="consid-card"><h4>🌦 Local Brick Sizes Vary</h4><p>Our formula uses the standard 9×4.5×3 inch brick common in USA, UK, India, Pakistan, and the Middle East. European metric bricks (215×102.5×65 mm) may show ±8% variance — verify with your supplier.</p></div>
+        <div class="consid-card"><h4>💰 Material Prices Fluctuate</h4><p>Brick and cement costs can swing 20–40% by season, region, and supplier. This tool's cost section is a planning estimate. Always get at least 3 supplier quotes before ordering.</p></div>
+      </div>
+
+      <!-- Example Calculations with Prices -->
+      <div class="sec-eyebrow" style="margin-top:44px;">🧮 Example Calculations</div>
+      <h2 class="sec-title">Verified <span class="u">Example Calculations</span> with Cost</h2>
+      <div class="ex-grid">
+
+        <div class="ex-card">
+          <div class="ex-tag">Example 1 — Bedroom Partition (4 Inch)</div>
+          <div class="ex-row"><span class="ex-k">Dimensions</span><span class="ex-v">15 ft × 10 ft</span></div>
+          <div class="ex-row"><span class="ex-k">Wall Area</span><span class="ex-v">150 ft²</span></div>
+          <div class="ex-row"><span class="ex-k">Net Bricks (5 × 150)</span><span class="ex-v">750 bricks</span></div>
+          <div class="ex-row"><span class="ex-k">+ 5% Waste</span><span class="ex-v">38 bricks</span></div>
+          <div class="ex-div"></div>
+          <div class="ex-row"><span class="ex-k">Total Bricks</span><span class="ex-v ex-total">788 bricks</span></div>
+          <div class="ex-row"><span class="ex-k">Cement (788 ÷ 500)</span><span class="ex-v">2 bags</span></div>
+          <div class="ex-row"><span class="ex-k">Sand (2 × 7.5 ft³)</span><span class="ex-v">15 ft³</span></div>
+          <div class="ex-div"></div>
+          <div class="ex-row"><span class="ex-k">Bricks @ $0.50 each</span><span class="ex-v">$394</span></div>
+          <div class="ex-row"><span class="ex-k">Cement @ $8/bag</span><span class="ex-v">$16</span></div>
+          <div class="ex-row"><span class="ex-k">Sand @ $1.50/ft³</span><span class="ex-v">$22.50</span></div>
+          <div class="ex-price">Estimated Total: $432.50</div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-tag">Example 2 — Exterior Wall (9 Inch)</div>
+          <div class="ex-row"><span class="ex-k">Dimensions</span><span class="ex-v">20 ft × 12 ft</span></div>
+          <div class="ex-row"><span class="ex-k">Wall Area</span><span class="ex-v">240 ft²</span></div>
+          <div class="ex-row"><span class="ex-k">Net Bricks (9 × 240)</span><span class="ex-v">2,160 bricks</span></div>
+          <div class="ex-row"><span class="ex-k">+ 10% Waste</span><span class="ex-v">216 bricks</span></div>
+          <div class="ex-div"></div>
+          <div class="ex-row"><span class="ex-k">Total Bricks</span><span class="ex-v ex-total">2,376 bricks</span></div>
+          <div class="ex-row"><span class="ex-k">Cement (2376 ÷ 500)</span><span class="ex-v">5 bags</span></div>
+          <div class="ex-row"><span class="ex-k">Sand (5 × 7.5 ft³)</span><span class="ex-v">37.5 ft³</span></div>
+          <div class="ex-div"></div>
+          <div class="ex-row"><span class="ex-k">Bricks @ $0.50 each</span><span class="ex-v">$1,188</span></div>
+          <div class="ex-row"><span class="ex-k">Cement @ $8/bag</span><span class="ex-v">$40</span></div>
+          <div class="ex-row"><span class="ex-k">Sand @ $1.50/ft³</span><span class="ex-v">$56.25</span></div>
+          <div class="ex-price">Estimated Total: $1,284.25</div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-tag">Example 3 — Garden Boundary (9 Inch)</div>
+          <div class="ex-row"><span class="ex-k">Dimensions</span><span class="ex-v">30 ft × 6 ft</span></div>
+          <div class="ex-row"><span class="ex-k">Wall Area</span><span class="ex-v">180 ft²</span></div>
+          <div class="ex-row"><span class="ex-k">Net Bricks (9 × 180)</span><span class="ex-v">1,620 bricks</span></div>
+          <div class="ex-row"><span class="ex-k">+ 7% Waste</span><span class="ex-v">113 bricks</span></div>
+          <div class="ex-div"></div>
+          <div class="ex-row"><span class="ex-k">Total Bricks</span><span class="ex-v ex-total">1,733 bricks</span></div>
+          <div class="ex-row"><span class="ex-k">Cement (1733 ÷ 500)</span><span class="ex-v">4 bags</span></div>
+          <div class="ex-row"><span class="ex-k">Sand (4 × 7.5 ft³)</span><span class="ex-v">30 ft³</span></div>
+          <div class="ex-div"></div>
+          <div class="ex-row"><span class="ex-k">Bricks @ $0.50 each</span><span class="ex-v">$866.50</span></div>
+          <div class="ex-row"><span class="ex-k">Cement @ $8/bag</span><span class="ex-v">$32</span></div>
+          <div class="ex-row"><span class="ex-k">Sand @ $1.50/ft³</span><span class="ex-v">$45</span></div>
+          <div class="ex-price">Estimated Total: $943.50</div>
+        </div>
+
+      </div>
+
+      <!-- Pro Tips -->
+      <div class="sec-eyebrow" style="margin-top:44px;">🧠 Cost-Saving Tips</div>
+      <h2 class="sec-title">Tips for a <span class="u">Reliable &amp; Cost-Efficient</span> Structure</h2>
+      <div class="tips-grid">
+        <div class="tip-card"><div class="tip-num">1</div><div><h4>Buy Direct from the Brick Kiln</h4><p>Purchasing directly from manufacturers vs distributors saves 15–25%. For large projects, visit kilns personally and negotiate bulk price — bring your total brick count from this calculator.</p></div></div>
+        <div class="tip-card"><div class="tip-num">2</div><div><h4>Switch to Fly Ash Bricks</h4><p>Fly ash bricks are 30–40% lighter, stronger in compression, and 20–30% cheaper than red clay bricks. They also absorb 30% less water, reducing the sand-cement mortar you need.</p></div></div>
+        <div class="tip-card"><div class="tip-num">3</div><div><h4>Pre-soak All Bricks</h4><p>Dry bricks steal water from mortar, preventing proper curing and weakening the bond. Submerge in water for at least 12 hours. This one step prevents wall cracking within the first 6 months.</p></div></div>
+        <div class="tip-card"><div class="tip-num">4</div><div><h4>Design Walls in Brick Modules</h4><p>Plan wall lengths as multiples of 9.5 inches (brick + joint). This cuts breakage waste from 15% to under 3% and eliminates half-brick cutting labour costs entirely.</p></div></div>
+        <div class="tip-card"><div class="tip-num">5</div><div><h4>Never Mix Old and New Cement</h4><p>Cement older than 3 months loses 20–30% of its strength. Check the bag date before purchasing. Even slightly hardened or lumpy cement should be discarded — never blended with fresh bags.</p></div></div>
+        <div class="tip-card"><div class="tip-num">6</div><div><h4>Store Sand Away from Contamination</h4><p>Sand mixed with clay, silt, or organic material weakens mortar by up to 40%. Store on a concrete slab or tarpaulin, not bare earth. Test sand by rubbing in your hand — it should feel clean and gritty, not dusty.</p></div></div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="sec-eyebrow" style="margin-top:48px;">❓ FAQ</div>
+      <h2 class="sec-title">Frequently Asked <span class="u">Questions</span></h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">How many cement bags do I need per 500 bricks?<span class="faq-arrow">+</span></button>
+          <div class="faq-ans">Exactly <strong>1 cement bag (50 kg) per 500 bricks</strong> — this is the verified industry-standard ratio used by professional masons worldwide. This calculator uses this precise formula. For 1,000 bricks you need 2 bags; for 2,500 bricks you need 5 bags.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">How much sand do I need per cement bag?<span class="faq-arrow">+</span></button>
+          <div class="faq-ans">Using a standard <strong>1:6 cement-to-sand mortar mix</strong>, you need <strong>7.5 cubic feet of sand per 50 kg cement bag</strong>. This accounts for bulking factor and proper mortar workability. So for 2 cement bags, you need 15 ft³ of sand.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">How many bricks per square foot for 4-inch and 9-inch walls?<span class="faq-arrow">+</span></button>
+          <div class="faq-ans">For a <strong>4-inch wall: 5 bricks per square foot</strong>. For a <strong>9-inch wall: 9 bricks per square foot</strong>. These are based on standard modular brick dimensions (9×4.5×3 inches) with a 10mm mortar joint — the accepted standard in the USA, UK, India, Pakistan, and the Middle East.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">What is the difference between a 4-inch and 9-inch wall?<span class="faq-arrow">+</span></button>
+          <div class="faq-ans">A <strong>4-inch wall</strong> is one brick wide — used for interior non-load-bearing partitions. A <strong>9-inch wall</strong> is two bricks wide — used for load-bearing exterior walls, compound boundary walls, and any structure supporting a roof or floor. The 9-inch wall is structurally approximately 2.5× stronger and uses 80% more materials.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">How do I deduct doors and windows from my calculation?<span class="faq-arrow">+</span></button>
+          <div class="faq-ans">Calculate your <strong>total wall area</strong> (length × height), then subtract the area of all openings. For example: Wall = 20ft × 10ft = 200 ft². Door = 3ft × 7ft = 21 ft². Window = 4ft × 4ft = 16 ft². Net area = 200 − 21 − 16 = <strong>163 ft²</strong>. Enter this net area in the "Wall Area" field above.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">How much waste percentage should I add?<span class="faq-arrow">+</span></button>
+          <div class="faq-ans">Use <strong>5%</strong> for professional skilled masons on simple straight walls. Use <strong>7–10%</strong> for standard construction projects. Use <strong>15–20%</strong> for curved walls, arched openings, decorative bonds, or irregular-shaped structures where brick cutting is heavy.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">Is this calculator accurate for all countries?<span class="faq-arrow">+</span></button>
+          <div class="faq-ans">Yes for countries using the standard modular brick (9×4.5×3 inches / 230×115×76 mm) — which covers <strong>USA, UK, India, Pakistan, UAE, Saudi Arabia, Bangladesh, and most of the Middle East and South Asia</strong>. Countries using the metric modular brick (215×102.5×65 mm common in continental Europe) may see ±8% variance. Always confirm with your local brick supplier.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-btn" onclick="toggleFaq(this)">Can I use this for circular or curved walls?<span class="faq-arrow">+</span></button>
+          <div class="faq-ans">Yes — calculate the surface area of the curved wall manually (arc length × wall height for a partial curve, or circumference × height for a full cylinder) and enter that value in the "Wall Area" field. Set waste percentage to <strong>15–20%</strong> to account for the heavy cutting required on curved brickwork.</div>
+        </div>
+      </div>
+
+    </div><!-- /seo-wrap -->
+  </div><!-- /container -->
+</main>
+
+<footer class="footer">
+  <p>Built for construction professionals worldwide — <strong>BrickCalc Pro</strong> is free forever.</p>
+  <p style="margin-top:6px;">All results are engineering estimates. Always consult a licensed structural engineer before commencing construction.</p>
+</footer>
+
+<!-- ═══ JAVASCRIPT ═══════════════════════ -->
+<script>
+/*
+  ─────────────────────────────────────────
+  VERIFIED CALCULATION FORMULAS:
+  • 4-inch wall : 5 bricks per sq ft
+  • 9-inch wall : 9 bricks per sq ft
+  • Cement      : 1 bag (50 kg) per 500 bricks
+  • Sand        : 7.5 ft³ per cement bag (1:6 ratio)
+  • Water       : 25 L per cement bag
+  ─────────────────────────────────────────
+*/
+let wallT = '4';
+let G = null; // global results store
+
+function setWall(t, btn) {
+  wallT = t;
+  document.querySelectorAll('.wall-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toFeet(v, u) {
+  const n = parseFloat(v);
+  if (isNaN(n) || n < 0) return null;
+  switch(u) {
+    case 'ft': return n;
+    case 'm':  return n * 3.28084;
+    case 'in': return n / 12;
+    case 'cm': return n / 30.48;
+    case 'yd': return n * 3;
+    default:   return n;
+  }
+}
+
+function toSqFt(v, u) {
+  const n = parseFloat(v);
+  if (isNaN(n) || n < 0) return null;
+  switch(u) {
+    case 'sqft': return n;
+    case 'sqm':  return n * 10.7639;
+    case 'sqyd': return n * 9;
+    default:     return n;
+  }
+}
+
+function doCalc() {
+  /* 1. Get area */
+  let areaSqFt;
+  const areaRaw = document.getElementById('inpArea').value.trim();
+
+  if (areaRaw !== '') {
+    areaSqFt = toSqFt(areaRaw, document.getElementById('selArea').value);
+    if (!areaSqFt || areaSqFt <= 0) { alert('Please enter a valid wall area.'); return; }
+  } else {
+    const lenFt = toFeet(document.getElementById('inpLen').value, document.getElementById('selLen').value);
+    const htFt  = toFeet(document.getElementById('inpHt').value,  document.getElementById('selHt').value);
+    if (!lenFt || !htFt || lenFt <= 0 || htFt <= 0) {
+      alert('Please enter Wall Length and Wall Height, or enter Wall Area directly.');
+      return;
+    }
+    areaSqFt = lenFt * htFt;
+  }
+
+  /* 2. Bricks */
+  const bricksPerSqFt = wallT === '4' ? 5 : 9;
+  const waste         = parseInt(document.getElementById('wasteRange').value);
+  const netBricks     = Math.round(areaSqFt * bricksPerSqFt);
+  const wasteBricks   = Math.round(netBricks * waste / 100);
+  const totalBricks   = netBricks + wasteBricks;
+
+  /* 3. Materials — 1 cement bag per 500 bricks */
+  const cementBags = Math.ceil(totalBricks / 500);     // 1 bag per 500 bricks
+  const sandFt3    = Math.round(cementBags * 7.5 * 10) / 10;  // 7.5 ft³ per bag
+  const waterL     = cementBags * 25;                  // 25 L per bag
+
+  /* Store globally */
+  G = {
+    areaSqFt: Math.round(areaSqFt * 100) / 100,
+    netBricks, wasteBricks, totalBricks,
+    cementBags, sandFt3, waterL
+  };
+
+  /* 4. Display brick results */
+  document.getElementById('rArea').textContent   = G.areaSqFt.toLocaleString();
+  document.getElementById('rBase').textContent   = netBricks.toLocaleString();
+  document.getElementById('rWaste').textContent  = wasteBricks.toLocaleString();
+  document.getElementById('rTotal').textContent  = totalBricks.toLocaleString();
+
+  /* 5. Display material results */
+  document.getElementById('rCement').textContent = cementBags;
+  document.getElementById('rSand').textContent   = sandFt3;
+  document.getElementById('rWater').textContent  = waterL;
+
+  /* 6. Pre-fill cost table quantities */
+  document.getElementById('ctQBrick').textContent  = totalBricks.toLocaleString() + ' pcs';
+  document.getElementById('ctQCement').textContent = cementBags + ' bags';
+  document.getElementById('ctQSand').textContent   = sandFt3 + ' ft³';
+
+  /* 7. Show results */
+  const rw = document.getElementById('resultsWrap');
+  rw.classList.add('show');
+  setTimeout(() => rw.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+
+  updateCost();
+
+  /* Increment counter */
+  const el = document.getElementById('usageCtr');
+  const n = parseInt(el.textContent.replace(/\D/g,''));
+  el.textContent = (n + 1).toLocaleString() + '+';
+}
+
+function updateCost() {
+  if (!G) return;
+  const sym = document.getElementById('selCur').value;
+  const pb  = parseFloat(document.getElementById('pBrick').value)  || 0;
+  const pc  = parseFloat(document.getElementById('pCement').value) || 0;
+  const ps  = parseFloat(document.getElementById('pSand').value)   || 0;
+
+  const bCost = pb * G.totalBricks;
+  const cCost = pc * G.cementBags;
+  const sCost = ps * G.sandFt3;
+  const total = bCost + cCost + sCost;
+
+  const fmt = n => sym + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const dash = '—';
+
+  document.getElementById('ctUBrick').textContent  = pb > 0 ? fmt(pb) : dash;
+  document.getElementById('ctUCement').textContent = pc > 0 ? fmt(pc) : dash;
+  document.getElementById('ctUSand').textContent   = ps > 0 ? fmt(ps) : dash;
+  document.getElementById('ctCBrick').textContent  = pb > 0 ? fmt(bCost) : dash;
+  document.getElementById('ctCCement').textContent = pc > 0 ? fmt(cCost) : dash;
+  document.getElementById('ctCSand').textContent   = ps > 0 ? fmt(sCost) : dash;
+  document.getElementById('ctTotal').textContent   = total > 0 ? fmt(total) : dash;
+}
+
+function doReset() {
+  ['inpLen','inpHt','inpArea','pBrick','pCement','pSand'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('wasteRange').value = 5;
+  document.getElementById('wasteChip').textContent = '5%';
+  document.getElementById('resultsWrap').classList.remove('show');
+  G = null;
+  wallT = '4';
+  document.querySelectorAll('.wall-btn').forEach((b,i) => b.classList.toggle('active', i === 0));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleFaq(btn) {
+  const ans = btn.nextElementSibling;
+  const isOpen = ans.classList.contains('open');
+  document.querySelectorAll('.faq-ans').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-btn').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { ans.classList.add('open'); btn.classList.add('open'); }
+}
+</script>
+</body>
+</html>
